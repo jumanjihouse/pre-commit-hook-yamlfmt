@@ -7,7 +7,7 @@
   name: Format YAML files
   description: Format YAML files
   entry: yamlfmt
-  language: python3
+  language: python
   types:
   - yaml
   additional_dependencies:
