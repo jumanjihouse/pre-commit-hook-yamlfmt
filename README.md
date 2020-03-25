@@ -1,4 +1,4 @@
-# Pre-commit git hooks
+# YAML formatter for pre-commit git hooks
 
 YAML formatter for [pre-commit](http://pre-commit.com).
 
@@ -36,6 +36,31 @@ Add to `.pre-commit-config.yaml` in your git repo:
       hooks:
           - id: yamlfmt
 
+:bulb: If a pre-commit hook changes a file,
+the hook fails with a warning that files were changed.
+
+The default settings are:
+
+- `mapping`: 4 spaces
+- `sequence`: 6 spaces
+- `offset`: 4 spaces
+- `colons`: do _not_ align top-level colons
+
+Given this input:
+
+    foo:
+      bar:
+        - baz1
+        - baz2
+
+The default settings result in this output:
+
+    ---
+    foo:
+        bar:
+            - baz1
+            - baz2
+
 
 #### Combine with `yamllint`
 
@@ -43,13 +68,13 @@ Add to `.pre-commit-config.yaml` in your git repo:
 I recommend to use `yamllint` and `yamlfmt` together.
 
     - repo: https://github.com/adrienverge/yamllint.git
-      rev: v1.21.0
+      rev: v1.21.0  # or higher tag
       hooks:
           - id: yamllint
             args: [--format, parsable, --strict]
 
     - repo: https://github.com/jumanjihouse/yamlfmt
-      rev:  # valid tag
+      rev: 0.0.4  # or higher tag
       hooks:
           - id: yamlfmt
 
@@ -59,7 +84,7 @@ I recommend to use `yamllint` and `yamlfmt` together.
 Add to `.pre-commit-config.yaml` in your git repo:
 
     - repo: https://github.com/jumanjihouse/yamlfmt
-      rev:  # valid tag
+      rev: 0.0.4  # or higher tag
       hooks:
           - id: yamlfmt
             args: [--mapping, '2', --sequence, '2', --offset, '0', --colons]
