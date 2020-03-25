@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='require-ascii',
-    description='A pre-commit hook to check that text files are ascii-encoded',
-    url='https://github.com/jumanjihouse/pre-commit-hooks',
+    name='yamlfmt',
+    description='A pre-commit hook to format YAML files',
+    url='https://github.com/jumanjihouse/yamlfmt',
     version='0.0.0',
 
     packages=[
@@ -11,10 +11,10 @@ setup(
     ],
 
     install_requires=[
-        'rueaml',
+        'rueaml.yaml',
     ],
 
     scripts=[
-        'pre_commit_hooks/yamlfmt.py',
+        'pre_commit_hooks/yamlfmt',
     ],
 )
