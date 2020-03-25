@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eEu
+set -o pipefail
+
+################################################################################
+# Prepare the local dev environment.
+# Invoke from the root of the git repo as "ci/bootstrap".
+################################################################################

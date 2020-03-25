@@ -1,0 +1,14 @@
+*~
+*.swp
+.idea/
+ci/.bootstrap
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# MacOS stupidly spews files all over my filesystem.
+.DS_Store
+.AppleDouble
+.LSOverride
