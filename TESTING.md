@@ -69,6 +69,10 @@ Output resembles:
     Executable shell script omits the filename extension..........................Passed
     Test shell scripts with shellcheck............................................Passed
     Check shell style with shfmt..................................................Passed
+    bandit........................................................................Passed
+    flake8........................................................................Passed
+    pydocstyle....................................................................Passed
+    pylint........................................................................Passed
     Check for added large files...................................................Passed
     Check for byte-order marker...................................................Passed
     Check for case conflicts......................................................Passed

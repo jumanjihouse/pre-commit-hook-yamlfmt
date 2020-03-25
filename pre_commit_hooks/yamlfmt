@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+"""Format YAML files."""
+
 import argparse
 import sys
-from ruamel.yaml import YAML
+from ruamel.yaml import YAML  # pylint: disable=import-error
 
 DEFAULT_INDENT = {
     "mapping": 4,
@@ -9,7 +11,9 @@ DEFAULT_INDENT = {
     "offset": 4,
     }
 
+
 class Cli:
+    # pylint: disable=too-few-public-methods
     """ command-line-interface """
 
     def __init__(self):
@@ -53,6 +57,7 @@ class Cli:
             help="space-separated list of YAML file names",
             )
         self.parser = parser
+
 
 class Formatter:
     """
@@ -112,13 +117,12 @@ class Formatter:
 
 
 if __name__ == "__main__":
-    cli = Cli().parser
-    args = cli.parse_args()
+    ARGS = Cli().parser.parse_args()
     FORMATTER = Formatter(
-        mapping=args.mapping,
-        sequence=args.sequence,
-        offset=args.offset,
-        colons=args.colons,
+        mapping=ARGS.mapping,
+        sequence=ARGS.sequence,
+        offset=ARGS.offset,
+        colons=ARGS.colons,
         )
-    for file_name in args.file_names:
+    for file_name in ARGS.file_names:
         FORMATTER.format(file_name)

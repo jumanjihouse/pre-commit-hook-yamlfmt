@@ -1,3 +1,5 @@
+"""Fake setup for pre-commit hook."""
+
 from setuptools import setup
 
 setup(

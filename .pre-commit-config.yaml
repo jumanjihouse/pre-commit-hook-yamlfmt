@@ -51,6 +51,26 @@ repos:
           - id: shfmt
             args: [-d, -i 4, -ci]
 
+    - repo: https://github.com/PyCQA/bandit
+      rev: 1.6.2
+      hooks:
+          - id: bandit
+
+    - repo: https://github.com/PyCQA/flake8
+      rev: 3.7.9
+      hooks:
+          - id: flake8
+
+    - repo: https://github.com/PyCQA/pydocstyle
+      rev: 5.0.2
+      hooks:
+          - id: pydocstyle
+
+    - repo: https://github.com/PyCQA/pylint
+      rev: pylint-2.4.4
+      hooks:
+          - id: pylint
+
     - repo: https://github.com/pre-commit/pre-commit-hooks
       rev: v2.5.0
       hooks:
