@@ -10,5 +10,3 @@
   language: python
   types:
   - yaml
-  additional_dependencies:
-  - ruamel.yaml

@@ -11,7 +11,7 @@ setup(
     ],
 
     install_requires=[
-        'rueaml.yaml',
+        'ruamel.yaml>=0.16.10',
     ],
 
     scripts=[
