@@ -6,3 +6,35 @@ set -o pipefail
 # Prepare the local dev environment.
 # Invoke from the root of the git repo as "ci/bootstrap".
 ################################################################################
+. ci/functions.sh
+
+DEPS=(
+    git
+    pip3
+    python3
+    shellcheck
+    shfmt
+)
+
+errors=()
+for dep in "${DEPS[@]}"; do
+    if ! command -v "${dep}"; then
+        errors+=("${dep}")
+    fi
+done
+
+if [[ ${#errors[@]} -ne 0 ]]; then
+    echo "[ERROR] Please install these dependencies"
+    for error in "${errors[@]}"; do
+        echo "    ${error}"
+    done
+    exit 1
+fi
+
+if ! git remote show upstream &>/dev/null; then
+    git remote add upstream https://github.com/jumanjihouse/yamlfmt.git
+fi
+git fetch --all --prune
+run pip3 install --user --compile -r ci/requirements.txt
+run pre-commit install-hooks
+touch ci/.bootstrap

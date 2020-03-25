@@ -1,0 +1,96 @@
+---
+# This file configures https://pre-commit.com/
+# to use specific hooks and options.
+
+fail_fast: false
+
+repos:
+    - repo: https://github.com/adrienverge/yamllint.git
+      rev: v1.21.0
+      hooks:
+          - id: yamllint
+            args: [--format, parsable, --strict]
+
+    - repo: local
+      hooks:
+          - id: yamlfmt
+            name: Format YAML files
+            description: Format YAML files
+            entry: pre_commit_hooks/yamlfmt
+            language: python
+            types: [yaml]
+            additional_dependencies:
+                - ruamel.yaml
+            exclude: .pre-commit-hooks.yaml
+
+    - repo: local
+      hooks:
+          - id: yamlfmt
+            name: Format YAML files with overrides
+            description: Format YAML files with overrides
+            entry: pre_commit_hooks/yamlfmt
+            language: python
+            files: .pre-commit-hooks.yaml
+            additional_dependencies:
+                - ruamel.yaml
+            args: [--mapping, '2', --sequence, '2', --offset, '0']
+
+    - repo: https://github.com/jumanjihouse/pre-commit-hooks
+      rev: 1.11.2
+      hooks:
+          - id: check-mailmap
+          - id: forbid-binary
+            exclude: assets/.*
+          - id: git-check  # Configure in .gitattributes
+          - id: git-dirty  # Configure in .gitignore
+          - id: markdownlint
+          - id: require-ascii
+          - id: script-must-have-extension
+          - id: script-must-not-have-extension
+          - id: shellcheck
+          - id: shfmt
+            args: [-d, -i 4, -ci]
+
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v2.5.0
+      hooks:
+          - id: check-added-large-files
+          - id: check-byte-order-marker
+          - id: check-case-conflict
+          - id: check-executables-have-shebangs
+          - id: check-json
+          - id: check-merge-conflict
+          - id: check-symlinks
+          - id: check-vcs-permalinks
+          - id: check-toml
+          - id: check-xml
+          - id: check-yaml
+          - id: detect-private-key
+          - id: requirements-txt-fixer
+          - id: sort-simple-yaml
+
+    - repo: https://github.com/Lucas-C/pre-commit-hooks
+      rev: v1.1.7
+      hooks:
+          - id: forbid-crlf
+          - id: forbid-tabs
+            exclude_types:  # Types come from "identify-cli".
+                - makefile
+                - go
+
+    - repo: https://github.com/jorisroovers/gitlint
+      rev: v0.13.1
+      hooks:
+          - id: gitlint
+            stages: [commit-msg]
+          - id: gitlint
+            entry: gitlint --commits upstream/master..
+            exclude: .*
+            always_run: true
+            stages: [manual]
+
+    - repo: https://github.com/Yelp/detect-secrets
+      rev: v0.13.0
+      hooks:
+          - id: detect-secrets
+            args: [--baseline, ci/secrets.baseline]

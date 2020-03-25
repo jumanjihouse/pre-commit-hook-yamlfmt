@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+import argparse
+import sys
+from ruamel.yaml import YAML
+
+DEFAULT_INDENT = {
+    "mapping": 4,
+    "sequence": 6,
+    "offset": 4,
+    }
+
+class Cli:
+    """ command-line-interface """
+
+    def __init__(self):
+        """ initialize the CLI """
+        parser = argparse.ArgumentParser(
+            description="Format YAML files",
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            epilog="Tips at https://yaml.readthedocs.io/en/latest/detail.html",
+            )
+        parser.add_argument(
+            "-m",
+            "--mapping",
+            type=int,
+            default=DEFAULT_INDENT["mapping"],
+            help="number of spaces to indent mappings (dictionaries)",
+            )
+        parser.add_argument(
+            "-s",
+            "--sequence",
+            type=int,
+            default=DEFAULT_INDENT["sequence"],
+            help="number of spaces to indent sequences (arrays/lists)",
+            )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            type=int,
+            default=DEFAULT_INDENT["offset"],
+            help="number of spaces to offset the dash from sequences",
+            )
+        parser.add_argument(
+            "-c",
+            "--colons",
+            action="store_true",
+            help="whether to align top-level colons",
+            )
+        parser.add_argument(
+            "file_names",
+            metavar="FILE_NAME",
+            nargs="*",
+            help="space-separated list of YAML file names",
+            )
+        self.parser = parser
+
+class Formatter:
+    """
+    Reformat a yaml file with proper indentation.
+    Preserve comments.
+    """
+    def __init__(self, **kwargs):
+        yaml = YAML()
+        yaml.indent(
+            mapping=kwargs.get("mapping", DEFAULT_INDENT["mapping"]),
+            sequence=kwargs.get("sequence", DEFAULT_INDENT["sequence"]),
+            offset=kwargs.get("offset", DEFAULT_INDENT["offset"]),
+            )
+        yaml.top_level_colon_align = kwargs.get("colons", False)
+        yaml.explicit_start = True
+
+        self.yaml = yaml
+        self.path = kwargs.get("path", None)
+        self.content = {}
+
+    def format(self, path=None):
+        """ Read file and write it out to same path """
+        if not path:
+            path = self.path
+        print(path, end="")
+        FORMATTER.parse_file(path)
+        FORMATTER.write_file(path)
+        print("  Done")
+
+    def parse_file(self, path=None):
+        """ Read the file """
+        if not path:
+            path = self.path
+        try:
+            stream = open(path, "r")
+            self.content = self.yaml.load(stream)
+            stream.close()
+        except IOError:
+            self.fail(f"Unable to read {path}")
+
+    def write_file(self, path=None):
+        """ Write the file """
+        if not path:
+            path = self.path
+        try:
+            stream = open(path, "w")
+            self.yaml.dump(self.content, stream)
+            stream.close()
+        except IOError:
+            self.fail(f"Unable to write {path}")
+
+    @staticmethod
+    def fail(msg):
+        """ Abort """
+        sys.stderr.write(msg)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    cli = Cli().parser
+    args = cli.parse_args()
+    FORMATTER = Formatter(
+        mapping=args.mapping,
+        sequence=args.sequence,
+        offset=args.offset,
+        colons=args.colons,
+        )
+    for file_name in args.file_names:
+        FORMATTER.format(file_name)
