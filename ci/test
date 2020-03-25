@@ -6,3 +6,20 @@ set -o pipefail
 # Run the test harness.
 # Invoke from the root of the git repo as "ci/test".
 ################################################################################
+. ci/functions.sh
+
+run pre_commit_hooks/yamlfmt --help
+echo
+
+while read -r file; do
+    run pre_commit_hooks/yamlfmt --mapping 4 --sequence 6 --offset 4 "${file}"
+done < <(find . -regex '.*\.yaml')
+
+echo "[INFO] Use with xargs"
+find . -regex '.*\.yaml' -print0 |
+    xargs --null pre_commit_hooks/yamlfmt -m 4 -s 6 -o 4
+echo
+
+run pre_commit_hooks/yamlfmt -m 2 -s 2 -o 0 .pre-commit-hooks.yaml
+
+run pre-commit run --all-files --hook-stage manual

@@ -6,3 +6,12 @@ set -o pipefail
 # Prepare the local dev environment.
 # Invoke from the root of the git repo as "ci/bootstrap".
 ################################################################################
+. ci/functions.sh
+
+if ! git remote show upstream &>/dev/null; then
+    git remote add upstream https://github.com/jumanjihouse/yamlfmt.git
+fi
+git fetch --all --prune
+run pip install --user --compile -r ci/requirements.txt
+run pre-commit install-hooks
+touch ci/.bootstrap
