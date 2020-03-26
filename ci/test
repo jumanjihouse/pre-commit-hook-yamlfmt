@@ -11,6 +11,8 @@ set -o pipefail
 run pre_commit_hooks/yamlfmt --help
 echo
 
+run pre-commit try-repo . --files .pre-commit-config.yaml
+
 while read -r file; do
     run pre_commit_hooks/yamlfmt --mapping 4 --sequence 6 --offset 4 "${file}"
 done < <(find . -regex '.*\.yaml')

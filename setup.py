@@ -8,11 +8,6 @@ setup(
     url='https://github.com/jumanjihouse/pre-commit-hook-yamlfmt',
     version='0.0.0',
 
-    # globally-unique name
-    packages=[
-        'jumanjihouse_precommit_yamlfmt',
-    ],
-
     install_requires=[
         'ruamel.yaml>=0.16.10',
     ],
