@@ -32,7 +32,8 @@ if [[ ${#errors[@]} -ne 0 ]]; then
 fi
 
 if ! git remote show upstream &>/dev/null; then
-    git remote add upstream https://github.com/jumanjihouse/yamlfmt.git
+    _upstream="https://github.com/jumanjihouse/pre-commit-hook-yamlfmt.git"
+    git remote add upstream "${_upstream}"
 fi
 git fetch --all --prune
 run pip3 install --user --compile -r ci/requirements.txt
