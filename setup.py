@@ -5,11 +5,12 @@ from setuptools import setup
 setup(
     name='yamlfmt',
     description='A pre-commit hook to format YAML files',
-    url='https://github.com/jumanjihouse/yamlfmt',
+    url='https://github.com/jumanjihouse/pre-commit-hook-yamlfmt',
     version='0.0.0',
 
+    # globally-unique name
     packages=[
-        'pre_commit_hooks',
+        'jumanjihouse_precommit_yamlfmt',
     ],
 
     install_requires=[
