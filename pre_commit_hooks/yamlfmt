@@ -76,7 +76,7 @@ class Formatter:
 
         self.yaml = yaml
         self.path = kwargs.get("path", None)
-        self.content = {}
+        self.content = list({})
 
     def format(self, path=None):
         """ Read file and write it out to same path """
@@ -92,9 +92,8 @@ class Formatter:
         if not path:
             path = self.path
         try:
-            stream = open(path, "r")
-            self.content = self.yaml.load(stream)
-            stream.close()
+            with open(path, "r") as stream:
+                self.content = list(self.yaml.load_all(stream))
         except IOError:
             self.fail(f"Unable to read {path}")
 
@@ -103,9 +102,8 @@ class Formatter:
         if not path:
             path = self.path
         try:
-            stream = open(path, "w")
-            self.yaml.dump(self.content, stream)
-            stream.close()
+            with open(path, "w") as stream:
+                self.yaml.dump_all(self.content, stream)
         except IOError:
             self.fail(f"Unable to write {path}")
 
