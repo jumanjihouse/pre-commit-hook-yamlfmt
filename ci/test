@@ -24,4 +24,12 @@ echo
 
 run pre_commit_hooks/yamlfmt -m 2 -s 2 -o 0 .pre-commit-hooks.yaml
 
+# Ensure we never break multidoc.
+TMP_FILE="$(mktemp pre-commit-hook-yamlfmt-test.XXXXXXXXXXXXXXXXXXXX)"
+run cp -f ci/multidoc-before.txt "${TMP_FILE}"
+run pre_commit_hooks/yamlfmt --mapping 4 --sequence 6 --offset 4 "${TMP_FILE}"
+run diff ci/multidoc-after.yaml "${TMP_FILE}"
+# If the diff fails, the temp file is still there to inspect.
+run rm -f "${TMP_FILE}"
+
 run pre-commit run --all-files --hook-stage manual

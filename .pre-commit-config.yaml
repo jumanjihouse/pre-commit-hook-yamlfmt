@@ -85,6 +85,7 @@ repos:
           - id: check-toml
           - id: check-xml
           - id: check-yaml
+            exclude: ci/multidoc-after.yaml  # check-yaml fails on multi-doc
           - id: detect-private-key
           - id: requirements-txt-fixer
           - id: sort-simple-yaml
