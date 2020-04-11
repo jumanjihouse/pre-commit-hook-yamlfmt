@@ -36,7 +36,7 @@ repos:
             args: [--mapping, '2', --sequence, '2', --offset, '0']
 
     - repo: https://github.com/jumanjihouse/pre-commit-hooks
-      rev: 1.11.3
+      rev: 2.0.0
       hooks:
           - id: check-mailmap
           - id: forbid-binary
@@ -67,7 +67,7 @@ repos:
           - id: pydocstyle
 
     - repo: https://github.com/PyCQA/pylint
-      rev: pylint-2.4.4
+      rev: pylint-2.4.2
       hooks:
           - id: pylint
 
@@ -111,7 +111,7 @@ repos:
             stages: [manual]
 
     - repo: https://github.com/Yelp/detect-secrets
-      rev: v0.13.0
+      rev: v0.13.1
       hooks:
           - id: detect-secrets
             args: [--baseline, ci/secrets.baseline]
