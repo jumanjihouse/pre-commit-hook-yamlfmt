@@ -51,6 +51,13 @@ class Cli:
             help="whether to align top-level colons",
             )
         parser.add_argument(
+            "-w",
+            "--width",
+            type=int,
+            default=150,
+            help="maximum line width",
+            )
+        parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
@@ -73,6 +80,7 @@ class Formatter:
             )
         yaml.top_level_colon_align = kwargs.get("colons", False)
         yaml.explicit_start = True
+        yaml.width = kwargs.get("width", None)
 
         self.yaml = yaml
         self.path = kwargs.get("path", None)
@@ -121,6 +129,7 @@ if __name__ == "__main__":
         sequence=ARGS.sequence,
         offset=ARGS.offset,
         colons=ARGS.colons,
+        width=ARGS.width
         )
     for file_name in ARGS.file_names:
         FORMATTER.format(file_name)
