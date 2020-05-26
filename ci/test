@@ -32,6 +32,14 @@ run diff ci/multidoc-after.yaml "${TMP_FILE}"
 # If the diff fails, the temp file is still there to inspect.
 run rm -f "${TMP_FILE}"
 
+# Test preserve quotes
+TMP_FILE="$(mktemp pre-commit-hook-yamlfmt-test.XXXXXXXXXXXXXXXXXXXX)"
+run cp -f ci/quotes-before.txt "${TMP_FILE}"
+run pre_commit_hooks/yamlfmt --mapping 4 --sequence 6 --offset 4 --preserve-quotes "${TMP_FILE}"
+run diff ci/quotes-after.txt "${TMP_FILE}"
+# If the diff fails, the temp file is still there to inspect.
+run rm -f "${TMP_FILE}"
+
 # Test width setting
 TMP_FILE="$(mktemp pre-commit-hook-yamlfmt-test.XXXXXXXXXXXXXXXXXXXX)"
 run cp -f ci/test-long.txt "${TMP_FILE}"

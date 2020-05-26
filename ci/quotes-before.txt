@@ -1,0 +1,6 @@
+bar:
+    baz:
+    - blah
+    - phfft
+    - 'blah'
+    - "foo"

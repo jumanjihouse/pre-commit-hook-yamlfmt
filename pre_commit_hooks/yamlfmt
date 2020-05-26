@@ -58,6 +58,12 @@ class Cli:
             help="maximum line width",
             )
         parser.add_argument(
+            "-p",
+            "--preserve-quotes",
+            action="store_true",
+            help="whether to keep existing string quoting"
+            )
+        parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
@@ -81,6 +87,7 @@ class Formatter:
         yaml.top_level_colon_align = kwargs.get("colons", False)
         yaml.explicit_start = True
         yaml.width = kwargs.get("width", None)
+        yaml.preserve_quotes = kwargs.get("preserve_quotes", False)
 
         self.yaml = yaml
         self.path = kwargs.get("path", None)
@@ -129,7 +136,8 @@ if __name__ == "__main__":
         sequence=ARGS.sequence,
         offset=ARGS.offset,
         colons=ARGS.colons,
-        width=ARGS.width
+        width=ARGS.width,
+        preserve_quotes=ARGS.preserve_quotes
         )
     for file_name in ARGS.file_names:
         FORMATTER.format(file_name)
