@@ -64,6 +64,12 @@ class Cli:
             help="whether to keep existing string quoting"
             )
         parser.add_argument(
+            "-e",
+            "--explicit-start",
+            action="store_true",
+            help="whether to add an explicit document start"
+            )
+        parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
@@ -85,7 +91,7 @@ class Formatter:
             offset=kwargs.get("offset", DEFAULT_INDENT["offset"]),
             )
         yaml.top_level_colon_align = kwargs.get("colons", False)
-        yaml.explicit_start = True
+        yaml.explicit_start = kwargs.get("explicit_start", True)
         yaml.width = kwargs.get("width", None)
         yaml.preserve_quotes = kwargs.get("preserve_quotes", False)
 
@@ -138,6 +144,7 @@ if __name__ == "__main__":
         colons=ARGS.colons,
         width=ARGS.width,
         preserve_quotes=ARGS.preserve_quotes
+        explicit_start=ARGS.explicit_start
         )
     for file_name in ARGS.file_names:
         FORMATTER.format(file_name)
