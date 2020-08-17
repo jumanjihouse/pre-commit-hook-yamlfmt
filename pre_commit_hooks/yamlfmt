@@ -67,6 +67,7 @@ class Cli:
             "-e",
             "--explicit-start",
             action="store_true",
+            default=True,
             help="whether to add an explicit document start"
             )
         parser.add_argument(
