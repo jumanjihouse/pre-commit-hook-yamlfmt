@@ -143,7 +143,7 @@ if __name__ == "__main__":
         offset=ARGS.offset,
         colons=ARGS.colons,
         width=ARGS.width,
-        preserve_quotes=ARGS.preserve_quotes
+        preserve_quotes=ARGS.preserve_quotes,
         explicit_start=ARGS.explicit_start
         )
     for file_name in ARGS.file_names:
