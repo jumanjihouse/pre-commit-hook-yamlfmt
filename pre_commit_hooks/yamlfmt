@@ -63,18 +63,47 @@ class Cli:
             action="store_true",
             help="whether to keep existing string quoting"
             )
-        parser.add_argument(
-            "-e",
+
+        document_start = parser.add_mutually_exclusive_group()
+        document_start.add_argument(
             "--implicit_start",
+            "-e",
             action="store_false",
+            dest="explicit_start",
+            default=argparse.SUPPRESS,
             help="whether to remove the explicit document start"
             )
+        document_start.add_argument(
+            "--explicit_start",
+            action="store_true",
+            dest="explicit_start",
+            default=True,
+            help="whether to add the explicit document start"
+            )
+
+        document_end = parser.add_mutually_exclusive_group()
+        document_end.add_argument(
+            "--implicit_end",
+            action="store_false",
+            dest="explicit_end",
+            default=argparse.SUPPRESS,
+            help="whether to remove the explicit document end"
+            )
+        document_end.add_argument(
+            "--explicit_end",
+            action="store_true",
+            dest="explicit_end",
+            default=False,
+            help="whether to add the explicit document end"
+            )
+
         parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
             help="space-separated list of YAML file names",
             )
+
         self.parser = parser
 
 
@@ -91,7 +120,8 @@ class Formatter:
             offset=kwargs.get("offset", DEFAULT_INDENT["offset"]),
             )
         yaml.top_level_colon_align = kwargs.get("colons", False)
-        yaml.explicit_start = kwargs.get("implicit_start", True)
+        yaml.explicit_start = kwargs.get("explicit_start", True)
+        yaml.explicit_end = kwargs.get("explicit_end", False)
         yaml.width = kwargs.get("width", None)
         yaml.preserve_quotes = kwargs.get("preserve_quotes", False)
 
@@ -144,7 +174,8 @@ if __name__ == "__main__":
         colons=ARGS.colons,
         width=ARGS.width,
         preserve_quotes=ARGS.preserve_quotes,
-        implicit_start=ARGS.implicit_start
+        explicit_start=ARGS.explicit_start,
+        explicit_end=ARGS.explicit_end
         )
     for file_name in ARGS.file_names:
         FORMATTER.format(file_name)
