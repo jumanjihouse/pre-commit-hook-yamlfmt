@@ -70,6 +70,12 @@ class Cli:
             help="whether to remove the explicit document start"
             )
         parser.add_argument(
+            "-n",
+            "--preserve_null",
+            action="store_true",
+            help="whether to keep null values"
+            )
+        parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
@@ -94,6 +100,11 @@ class Formatter:
         yaml.explicit_start = kwargs.get("implicit_start", True)
         yaml.width = kwargs.get("width", None)
         yaml.preserve_quotes = kwargs.get("preserve_quotes", False)
+
+        if kwargs.get("preserve_null"):
+          def represent_none(self, data):
+              return self.represent_scalar(u'tag:yaml.org,2002:null', u'null')
+          yaml.representer.add_representer(type(None), represent_none)
 
         self.yaml = yaml
         self.path = kwargs.get("path", None)
@@ -134,7 +145,6 @@ class Formatter:
         sys.stderr.write(msg)
         sys.exit(1)
 
-
 if __name__ == "__main__":
     ARGS = Cli().parser.parse_args()
     FORMATTER = Formatter(
@@ -144,7 +154,8 @@ if __name__ == "__main__":
         colons=ARGS.colons,
         width=ARGS.width,
         preserve_quotes=ARGS.preserve_quotes,
-        implicit_start=ARGS.implicit_start
+        implicit_start=ARGS.implicit_start,
+        preserve_null=ARGS.preserve_null
         )
     for file_name in ARGS.file_names:
         FORMATTER.format(file_name)
