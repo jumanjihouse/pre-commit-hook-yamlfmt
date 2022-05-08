@@ -113,7 +113,7 @@ class Formatter:
         if not path:
             path = self.path
         try:
-            with open(path, "r") as stream:
+            with open(path, "r", encoding='utf-8') as stream:
                 self.content = list(self.yaml.load_all(stream))
         except IOError:
             self.fail(f"Unable to read {path}")
@@ -123,7 +123,7 @@ class Formatter:
         if not path:
             path = self.path
         try:
-            with open(path, "w") as stream:
+            with open(path, "w", encoding='utf-8') as stream:
                 self.yaml.dump_all(self.content, stream)
         except IOError:
             self.fail(f"Unable to write {path}")
