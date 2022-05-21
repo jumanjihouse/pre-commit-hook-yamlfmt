@@ -1,0 +1,11 @@
+---
+# Nulls in YAML - https://yaml.org/type/null.html
+nulls_in_list:
+    - null
+    - NULL
+    - ~
+    -
+explicit_lower_null: null
+explicit_upper_null: NULL
+explicit_tilde: ~
+empty_is_null:

@@ -63,6 +63,13 @@ class Cli:
             action="store_true",
             help="whether to keep existing string quoting"
             )
+        parser.add_argument(
+            "-n",
+            "--null-value",
+            type=str,
+            default="",
+            help="what to put in place of nulls"
+        )
 
         document_start = parser.add_mutually_exclusive_group()
         document_start.add_argument(
@@ -124,6 +131,12 @@ class Formatter:
         yaml.explicit_end = kwargs.get("explicit_end", False)
         yaml.width = kwargs.get("width", None)
         yaml.preserve_quotes = kwargs.get("preserve_quotes", False)
+        yaml.representer.add_representer(
+            type(None),
+            lambda representer, _: representer.represent_scalar(
+                "tag:yaml.org,2002:null", kwargs.get("null_value", "")
+            )
+        )
 
         self.yaml = yaml
         self.path = kwargs.get("path", None)
@@ -174,6 +187,7 @@ if __name__ == "__main__":
         colons=ARGS.colons,
         width=ARGS.width,
         preserve_quotes=ARGS.preserve_quotes,
+        null_value=ARGS.null_value,
         explicit_start=ARGS.explicit_start,
         explicit_end=ARGS.explicit_end
         )
