@@ -184,7 +184,7 @@ if __name__ == "__main__":
         colons=ARGS.colons,
         width=ARGS.width,
         preserve_quotes=ARGS.preserve_quotes,
-        preserve_null=ARGS.preserve_null
+        preserve_null=ARGS.preserve_null,
         implicit_start=ARGS.implicit_start,
         explicit_start=ARGS.explicit_start,
         explicit_end=ARGS.explicit_end
