@@ -15,4 +15,8 @@ setup(
     scripts=[
         'pre_commit_hooks/yamlfmt',
     ],
+
+    # explicitly declare packages so setuptools does not attempt auto discovery
+    # taken from https://github.com/pypa/setuptools/issues/3197
+    packages=[],
 )

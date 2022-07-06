@@ -32,7 +32,7 @@ to do the heavy lifting and preserve comments within YAML files.
 Add to `.pre-commit-config.yaml` in your git repo:
 
     - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-      rev: 0.0.11  # or specific tag
+      rev: 0.2.1  # or other specific tag
       hooks:
           - id: yamlfmt
 
@@ -75,7 +75,7 @@ I recommend to use `yamllint` and `yamlfmt` together.
             args: [--format, parsable, --strict]
 
     - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-      rev: 0.0.11  # or specific tag
+      rev: 0.2.1  # or other specific tag
       hooks:
           - id: yamlfmt
 
@@ -85,7 +85,7 @@ I recommend to use `yamllint` and `yamlfmt` together.
 Add to `.pre-commit-config.yaml` in your git repo:
 
     - repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-      rev: 0.0.11  # or specific tag
+      rev: 0.2.1  # or other specific tag
       hooks:
           - id: yamlfmt
             args: [--mapping, '2', --sequence, '2', --offset, '0', --colons, --width, '150']
