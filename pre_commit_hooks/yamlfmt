@@ -175,6 +175,7 @@ class Formatter:
         sys.stderr.write(msg)
         sys.exit(1)
 
+
 if __name__ == "__main__":
     ARGS = Cli().parser.parse_args()
     FORMATTER = Formatter(
