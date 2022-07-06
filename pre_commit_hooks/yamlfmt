@@ -132,7 +132,7 @@ class Formatter:
         yaml.preserve_quotes = kwargs.get("preserve_quotes", False)
 
         if kwargs.get("preserve_null"):
-            def represent_none(self, data):
+            def represent_none(self, _data):
                 return self.represent_scalar('tag:yaml.org,2002:null', 'null')
             yaml.representer.add_representer(type(None), represent_none)
 
