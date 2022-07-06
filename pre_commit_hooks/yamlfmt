@@ -98,6 +98,12 @@ class Cli:
             )
 
         parser.add_argument(
+            "-n",
+            "--preserve_null",
+            action="store_true",
+            help="whether to keep null values"
+            )
+        parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
@@ -124,6 +130,11 @@ class Formatter:
         yaml.explicit_end = kwargs.get("explicit_end", False)
         yaml.width = kwargs.get("width", None)
         yaml.preserve_quotes = kwargs.get("preserve_quotes", False)
+
+        if kwargs.get("preserve_null"):
+            def represent_none(self, _data):
+                return self.represent_scalar('tag:yaml.org,2002:null', 'null')
+            yaml.representer.add_representer(type(None), represent_none)
 
         self.yaml = yaml
         self.path = kwargs.get("path", None)
@@ -174,6 +185,7 @@ if __name__ == "__main__":
         colons=ARGS.colons,
         width=ARGS.width,
         preserve_quotes=ARGS.preserve_quotes,
+        preserve_null=ARGS.preserve_null,
         explicit_start=ARGS.explicit_start,
         explicit_end=ARGS.explicit_end
         )
