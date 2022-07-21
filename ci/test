@@ -51,4 +51,12 @@ run pre_commit_hooks/yamlfmt --width 79 "${TMP_FILE}"
 run grep -v -q '.\{82\}' "${TMP_FILE}"
 run rm -f "${TMP_FILE}"
 
+# Test sorting keys
+TMP_FILE="$(mktemp pre-commit-hook-yamlfmt-test.XXXXXXXXXXXXXXXXXXXX)"
+run cp -f ci/sort-before.txt "${TMP_FILE}"
+run pre_commit_hooks/yamlfmt --mapping 4 --sequence 6 --offset 4 --sort_keys "${TMP_FILE}"
+run diff ci/sort-after.txt "${TMP_FILE}"
+# If the diff fails, the temp file is still there to inspect.
+run rm -f "${TMP_FILE}"
+
 run pre-commit run --all-files --hook-stage manual

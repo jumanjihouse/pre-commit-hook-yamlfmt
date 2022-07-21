@@ -1,0 +1,10 @@
+---
+# Leave comment in place
+foo: bar
+quu: abcd  # with comment
+---
+bar:
+    baz:
+    # the following list should keep its order
+        - phfft
+        - blah
