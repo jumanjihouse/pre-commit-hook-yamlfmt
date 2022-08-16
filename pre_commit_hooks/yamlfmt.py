@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
 """Format YAML files."""
 
-import argparse
 import sys
+import argparse
 from ruamel.yaml import YAML  # pylint: disable=import-error
 
 DEFAULT_INDENT = {
@@ -14,10 +13,10 @@ DEFAULT_INDENT = {
 
 class Cli:
     # pylint: disable=too-few-public-methods
-    """ command-line-interface """
+    """Command-line-interface."""
 
     def __init__(self):
-        """ initialize the CLI """
+        """Initialize the CLI."""
         parser = argparse.ArgumentParser(
             description="Format YAML files",
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -116,9 +115,12 @@ class Cli:
 class Formatter:
     """
     Reformat a yaml file with proper indentation.
+
     Preserve comments.
     """
+
     def __init__(self, **kwargs):
+        """Initialize the formatter."""
         yaml = YAML()
         yaml.indent(
             mapping=kwargs.get("mapping", DEFAULT_INDENT["mapping"]),
@@ -141,16 +143,16 @@ class Formatter:
         self.content = list({})
 
     def format(self, path=None):
-        """ Read file and write it out to same path """
+        """Read file and write it out to same path."""
         if not path:
             path = self.path
         print(path, end="")
-        FORMATTER.parse_file(path)
-        FORMATTER.write_file(path)
+        self.parse_file(path)
+        self.write_file(path)
         print("  Done")
 
     def parse_file(self, path=None):
-        """ Read the file """
+        """Read the file."""
         if not path:
             path = self.path
         try:
@@ -160,7 +162,7 @@ class Formatter:
             self.fail(f"Unable to read {path}")
 
     def write_file(self, path=None):
-        """ Write the file """
+        """Write the file."""
         if not path:
             path = self.path
         try:
@@ -171,23 +173,28 @@ class Formatter:
 
     @staticmethod
     def fail(msg):
-        """ Abort """
+        """Abort."""
         sys.stderr.write(msg)
         sys.exit(1)
 
 
-if __name__ == "__main__":
-    ARGS = Cli().parser.parse_args()
-    FORMATTER = Formatter(
-        mapping=ARGS.mapping,
-        sequence=ARGS.sequence,
-        offset=ARGS.offset,
-        colons=ARGS.colons,
-        width=ARGS.width,
-        preserve_quotes=ARGS.preserve_quotes,
-        preserve_null=ARGS.preserve_null,
-        explicit_start=ARGS.explicit_start,
-        explicit_end=ARGS.explicit_end
+def main():
+    """Fit formatter."""
+    args = Cli().parser.parse_args()
+    formatter = Formatter(
+        mapping=args.mapping,
+        sequence=args.sequence,
+        offset=args.offset,
+        colons=args.colons,
+        width=args.width,
+        preserve_quotes=args.preserve_quotes,
+        preserve_null=args.preserve_null,
+        explicit_start=args.explicit_start,
+        explicit_end=args.explicit_end
         )
-    for file_name in ARGS.file_names:
-        FORMATTER.format(file_name)
+    for file_name in args.file_names:
+        formatter.format(file_name)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,1 @@
+"""Init to import yamlfmt."""
