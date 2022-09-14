@@ -1,6 +1,7 @@
 """Fake setup for pre-commit hook."""
 
 from setuptools import setup
+from setuptools import find_packages
 
 setup(
     name='yamlfmt',
@@ -12,11 +13,9 @@ setup(
         'ruamel.yaml>=0.16.10',
     ],
 
-    scripts=[
-        'pre_commit_hooks/yamlfmt',
-    ],
+    packages=find_packages(),
 
-    # explicitly declare packages so setuptools does not attempt auto discovery
-    # taken from https://github.com/pypa/setuptools/issues/3197
-    packages=[],
+    entry_points={
+        'console_scripts':
+            ['yamlfmt = pre_commit_hooks.yamlfmt:main']},
 )

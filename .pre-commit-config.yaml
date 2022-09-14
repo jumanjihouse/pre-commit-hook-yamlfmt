@@ -16,7 +16,7 @@ repos:
           - id: yamlfmt
             name: Format YAML files
             description: Format YAML files
-            entry: pre_commit_hooks/yamlfmt
+            entry: python3 -m pre_commit_hooks.yamlfmt
             language: python
             types: [yaml]
             additional_dependencies:
@@ -28,7 +28,7 @@ repos:
           - id: yamlfmt
             name: Format YAML files with overrides
             description: Format YAML files with overrides
-            entry: pre_commit_hooks/yamlfmt
+            entry: python3 -m pre_commit_hooks.yamlfmt
             language: python
             files: .pre-commit-hooks.yaml
             additional_dependencies:
