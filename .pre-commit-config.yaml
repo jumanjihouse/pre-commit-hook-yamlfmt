@@ -6,10 +6,11 @@ fail_fast: false
 
 repos:
     - repo: https://github.com/adrienverge/yamllint.git
-      rev: v1.26.3
+      rev: v1.31.0
       hooks:
           - id: yamllint
             args: [--format, parsable, --strict]
+            exclude: ^.pre-commit-hooks.yaml$
 
     - repo: local
       hooks:
@@ -36,7 +37,7 @@ repos:
             args: [--mapping, '2', --sequence, '2', --offset, '0']
 
     - repo: https://github.com/jumanjihouse/pre-commit-hooks
-      rev: 2.1.6
+      rev: 3.0.0
       hooks:
           - id: check-mailmap
           - id: forbid-binary
@@ -52,27 +53,27 @@ repos:
             args: [-d, -i 4, -ci]
 
     - repo: https://github.com/PyCQA/bandit
-      rev: 1.7.4
+      rev: 1.7.5
       hooks:
           - id: bandit
 
     - repo: https://github.com/PyCQA/flake8
-      rev: 4.0.1
+      rev: 6.0.0
       hooks:
           - id: flake8
 
     - repo: https://github.com/PyCQA/pydocstyle
-      rev: 6.1.1
+      rev: 6.3.0
       hooks:
           - id: pydocstyle
 
     - repo: https://github.com/PyCQA/pylint
-      rev: v2.13.8
+      rev: v3.0.0a6
       hooks:
           - id: pylint
 
     - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.2.0
+      rev: v4.4.0
       hooks:
           - id: check-added-large-files
           - id: check-byte-order-marker
@@ -91,7 +92,7 @@ repos:
           - id: sort-simple-yaml
 
     - repo: https://github.com/Lucas-C/pre-commit-hooks
-      rev: v1.1.13
+      rev: v1.5.1
       hooks:
           - id: forbid-crlf
           - id: forbid-tabs
@@ -111,7 +112,7 @@ repos:
             stages: [manual]
 
     - repo: https://github.com/Yelp/detect-secrets
-      rev: v1.2.0
+      rev: v1.4.0
       hooks:
           - id: detect-secrets
             args: [--baseline, ci/secrets.baseline]

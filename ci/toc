@@ -11,6 +11,6 @@ readonly INDENT="      "
 trap 'echo [ERROR] in ${FILENAME}' ERR
 while read -r FILENAME; do
     # We expect line 1 to be the L1 heading.
-    md_toc --skip-lines 1 --in-place "${FILENAME}" github -l 4
+    md_toc --skip-lines 1 --in-place github -l 4 "${FILENAME}"
     echo "${INDENT}${FILENAME} OK"
 done < <(find . -name '*.md' -type f -exec grep -l '<!--TOC-->' {} +)

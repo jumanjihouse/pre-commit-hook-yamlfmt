@@ -145,7 +145,7 @@ class Formatter:
         if not path:
             path = self.path
         print(path, end="")
-        FORMATTER.parse_file(path)
+        FORMATTER.parse_file(path)  # pylint: disable=E0601
         FORMATTER.write_file(path)
         print("  Done")
 
