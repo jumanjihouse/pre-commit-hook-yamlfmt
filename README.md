@@ -88,7 +88,7 @@ Add to `.pre-commit-config.yaml` in your git repo:
       rev: 0.2.1  # or other specific tag
       hooks:
           - id: yamlfmt
-            args: [--mapping, '2', --sequence, '2', --offset, '0', --colons, --width, '150']
+            args: [--mapping, '4', --sequence, '4', --offset, '2', --colons, --width, '150']
 
 
 ### Invoke pre-commit
