@@ -4,6 +4,7 @@
 import argparse
 import sys
 from ruamel.yaml import YAML  # pylint: disable=import-error
+from ruamel.yaml.comments import CommentedMap  # pylint: disable=import-error
 
 DEFAULT_INDENT = {
     "mapping": 4,
@@ -104,6 +105,12 @@ class Cli:
             help="whether to keep null values"
             )
         parser.add_argument(
+            "-k",
+            "--sort_keys",
+            action="store_true",
+            help="whether to sort yaml keys"
+            )
+        parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
@@ -138,6 +145,7 @@ class Formatter:
 
         self.yaml = yaml
         self.path = kwargs.get("path", None)
+        self.sort_keys = kwargs.get("sort_keys", False)
         self.content = list({})
 
     def format(self, path=None):
@@ -165,7 +173,11 @@ class Formatter:
             path = self.path
         try:
             with open(path, "w", encoding='utf-8') as stream:
-                self.yaml.dump_all(self.content, stream)
+                if self.sort_keys:
+                    _content = self.sort(self.content)
+                else:
+                    _content = self.content
+                self.yaml.dump_all(_content, stream)
         except IOError:
             self.fail(f"Unable to write {path}")
 
@@ -174,6 +186,21 @@ class Formatter:
         """ Abort """
         sys.stderr.write(msg)
         sys.exit(1)
+
+    @classmethod
+    def sort(cls, this):
+        """ Sort a content dictionary and keep comments """
+        if isinstance(this, dict):
+            res = CommentedMap()
+            comment = this.ca
+            for k in sorted(this.keys()):
+                res[k] = cls.sort(this[k])
+            res._yaml_comment = comment  # pylint: disable=protected-access
+            return res
+        if isinstance(this, list):
+            for idx, elem in enumerate(this):
+                this[idx] = cls.sort(elem)
+        return this
 
 
 if __name__ == "__main__":
@@ -187,7 +214,8 @@ if __name__ == "__main__":
         preserve_quotes=ARGS.preserve_quotes,
         preserve_null=ARGS.preserve_null,
         explicit_start=ARGS.explicit_start,
-        explicit_end=ARGS.explicit_end
+        explicit_end=ARGS.explicit_end,
+        sort_keys=ARGS.sort_keys
         )
     for file_name in ARGS.file_names:
         FORMATTER.format(file_name)
