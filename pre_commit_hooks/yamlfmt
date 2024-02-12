@@ -144,10 +144,8 @@ class Formatter:
         """ Read file and write it out to same path """
         if not path:
             path = self.path
-        print(path, end="")
         FORMATTER.parse_file(path)  # pylint: disable=E0601
         FORMATTER.write_file(path)
-        print("  Done")
 
     def parse_file(self, path=None):
         """ Read the file """
