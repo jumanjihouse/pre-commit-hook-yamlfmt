@@ -104,6 +104,13 @@ class Cli:
             help="whether to keep null values"
             )
         parser.add_argument(
+            "--line-endings",
+            choices=['lf', 'crlf', 'cr'],
+            default="lf",
+            help="write output files with specific EOL (default EOL depends"
+                 " on OS)"
+            )
+        parser.add_argument(
             "file_names",
             metavar="FILE_NAME",
             nargs="*",
@@ -139,6 +146,14 @@ class Formatter:
                 return self.represent_scalar('tag:yaml.org,2002:null', 'null')
             yaml.representer.add_representer(type(None), represent_none)
 
+        line_endings_map = {
+            "lf": "\n",
+            "crlf": "\r\n",
+            "cr": "\r"
+        }
+        self.line_endings = line_endings_map.get(
+            kwargs.get("line_endings", None), None)
+
         self.yaml = yaml
         self.path = kwargs.get("path", None)
         self.content = list({})
@@ -167,7 +182,8 @@ class Formatter:
         if not path:
             path = self.path
         try:
-            with open(path, "w", encoding='utf-8') as stream:
+            with open(path, "w", encoding='utf-8',
+                      newline=self.line_endings) as stream:
                 self.yaml.dump_all(self.content, stream)
         except IOError:
             self.fail(f"Unable to write {path}")
@@ -191,7 +207,8 @@ def main():
         preserve_quotes=args.preserve_quotes,
         preserve_null=args.preserve_null,
         explicit_start=args.explicit_start,
-        explicit_end=args.explicit_end
+        explicit_end=args.explicit_end,
+        line_endings=args.line_endings
         )
     for file_name in args.file_names:
         formatter.format(file_name)

@@ -6,7 +6,7 @@ setup(
     name='yamlfmt',
     description='A pre-commit hook to format YAML files',
     url='https://github.com/jumanjihouse/pre-commit-hook-yamlfmt',
-    version='0.3.0',
+    version='0.4.0',
 
     install_requires=[
         'ruamel.yaml >=0.16.10, <=0.17.21',

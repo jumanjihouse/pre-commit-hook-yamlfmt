@@ -51,4 +51,30 @@ run pre_commit_hooks/yamlfmt.py --width 79 "${TMP_FILE}"
 run grep -v -q '.\{82\}' "${TMP_FILE}"
 run rm -f "${TMP_FILE}"
 
+# Test line endings
+# File command will say nothing about line terminators for LF, but will for CRLF and CR endings
+TMP_FILE="$(mktemp pre-commit-hook-yamlfmt-test.XXXXXXXXXXXXXXXXXXXX)"
+run cp -f ci/test-eolchars.txt "${TMP_FILE}"
+run pre_commit_hooks/yamlfmt.py --mapping 4 --sequence 6 --offset 4 --preserve-quotes "${TMP_FILE}"
+run grep -q -v "CRLF line terminators" <(file -b "${TMP_FILE}")
+run grep -q -v "CR line terminators" <(file -b "${TMP_FILE}")
+# No line-endings argument passed - should be LF only when run on *nix plaftorms
+run cp -f ci/test-eolchars.txt "${TMP_FILE}"
+run pre_commit_hooks/yamlfmt.py --mapping 4 --sequence 6 --offset 4 --preserve-quotes --line-endings lf "${TMP_FILE}"
+run grep -q -v 'CRLF line terminators' <(file -b "${TMP_FILE}")
+run grep -q -v 'CR line terminators' <(file -b "${TMP_FILE}")
+# LF line-endings argument passed - Should be not CR and not CRLF
+run cp -f ci/test-eolchars.txt "${TMP_FILE}"
+run pre_commit_hooks/yamlfmt.py --mapping 4 --sequence 6 --offset 4 --preserve-quotes --line-endings crlf "${TMP_FILE}"
+run grep -q 'CRLF line terminators' <(file -b "${TMP_FILE}")
+run grep -q -v 'CR line terminators' <(file -b "${TMP_FILE}")
+# CRLF argument passed - Should be CRLF line terminators
+run cp -f ci/test-eolchars.txt "${TMP_FILE}"
+run pre_commit_hooks/yamlfmt.py --mapping 4 --sequence 6 --offset 4 --preserve-quotes --line-endings cr "${TMP_FILE}"
+run grep -q -v 'CRLF line terminators' <(file -b "${TMP_FILE}")
+run grep -q 'CR line terminators' <(file -b "${TMP_FILE}")
+# CR argument passed - Should be CR line terminators
+# If the tests fail, the temp file is still there to inspect.
+run rm -f "${TMP_FILE}"
+
 run pre-commit run --all-files --hook-stage manual
