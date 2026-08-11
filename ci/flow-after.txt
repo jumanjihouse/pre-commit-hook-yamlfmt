@@ -1,0 +1,43 @@
+---
+# Sequences narrower than the limit stay in flow style.
+short: [a, b]
+empty: []
+
+# Sequences wider than the limit become block sequences.
+annotations:
+- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+- cccccccccccccccccccccccccccccc
+- dddddddddddddddddddddddddddddd
+
+# Nested collections are never rewritten: their width is unpredictable, and
+# block style is illegal inside flow style.
+nested: [[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb], [cccccccccccccccccccc]]
+mappings: [name: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, name: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]
+
+# A null would render as an empty scalar in block style, so this one stays.
+nulls: [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, null, bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]
+
+# Anchors, aliases and comments survive the rewrite.
+anchored: &anc
+- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+- cccccccccc
+alias: *anc
+
+# The limit is measured against the whole rendered line, so indentation and the
+# key both count towards it.
+deeply:
+  nested:
+    key:
+    - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    - bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  in_a_sequence:
+  - command:
+    - /bin/sh
+    - -c
+    - echo aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+---
+second_document:
+- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+- bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb

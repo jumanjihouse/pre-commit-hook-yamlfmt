@@ -53,7 +53,8 @@ repos:
             args: [-d, -i 4, -ci]
 
     - repo: https://github.com/PyCQA/bandit
-      rev: 1.7.5
+      # 1.7.5 does not declare pbr, so its hook env cannot import bandit.
+      rev: 1.8.6
       hooks:
           - id: bandit
 
