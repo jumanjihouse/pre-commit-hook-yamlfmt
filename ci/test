@@ -51,4 +51,20 @@ run pre_commit_hooks/yamlfmt.py --width 79 "${TMP_FILE}"
 run grep -v -q '.\{82\}' "${TMP_FILE}"
 run rm -f "${TMP_FILE}"
 
+# Test rewriting wide flow sequences as block sequences.
+TMP_FILE="$(mktemp pre-commit-hook-yamlfmt-test.XXXXXXXXXXXXXXXXXXXX)"
+run cp -f ci/flow-before.txt "${TMP_FILE}"
+# Disabled by default: wide flow sequences are left alone.
+run pre_commit_hooks/yamlfmt.py -m 2 -s 2 -o 0 -w 4096 "${TMP_FILE}"
+run grep -q '^annotations: \[' "${TMP_FILE}"
+# Enabled: anything wider than the limit becomes a block sequence.
+run cp -f ci/flow-before.txt "${TMP_FILE}"
+run pre_commit_hooks/yamlfmt.py -m 2 -s 2 -o 0 -w 4096 --max-flow-width 100 "${TMP_FILE}"
+run diff ci/flow-after.txt "${TMP_FILE}"
+# Rewriting is idempotent: block sequences round-trip unchanged.
+run pre_commit_hooks/yamlfmt.py -m 2 -s 2 -o 0 -w 4096 --max-flow-width 100 "${TMP_FILE}"
+run diff ci/flow-after.txt "${TMP_FILE}"
+# If the diff fails, the temp file is still there to inspect.
+run rm -f "${TMP_FILE}"
+
 run pre-commit run --all-files --hook-stage manual
