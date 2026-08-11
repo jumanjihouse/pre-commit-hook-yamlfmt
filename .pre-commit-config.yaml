@@ -53,7 +53,8 @@ repos:
             args: [-d, -i 4, -ci]
 
     - repo: https://github.com/PyCQA/bandit
-      rev: 1.7.5
+      # 1.7.5 does not declare pbr, so its hook env cannot import bandit.
+      rev: 1.8.6
       hooks:
           - id: bandit
 
@@ -68,9 +69,14 @@ repos:
           - id: pydocstyle
 
     - repo: https://github.com/PyCQA/pylint
-      rev: v3.0.0a6
+      # v3.0.0a6 cannot be built on Python >= 3.12: its pinned setuptools calls
+      # pkgutil.ImpImporter, which was removed from the standard library.
+      rev: v3.3.9
       hooks:
           - id: pylint
+            additional_dependencies:
+                # setup.py imports setuptools, which pylint must resolve.
+                - setuptools
 
     - repo: https://github.com/pre-commit/pre-commit-hooks
       rev: v4.4.0
@@ -101,15 +107,15 @@ repos:
                 - go
 
     - repo: https://github.com/jorisroovers/gitlint
-      rev: v0.13.1
+      # v0.13.1 calls ConfigParser.readfp, removed in Python 3.12.
+      rev: v0.19.1
       hooks:
           - id: gitlint
             stages: [commit-msg]
-          - id: gitlint
-            entry: gitlint --commits upstream/master..
-            exclude: .*
-            always_run: true
-            stages: [manual]
+          # v0.19.1 ships gitlint-ci for this: it passes no filenames, so it
+          # does not inherit the --msg-filename argument of the hook above.
+          - id: gitlint-ci
+            args: [--commits, upstream/master..]
 
     - repo: https://github.com/Yelp/detect-secrets
       rev: v1.4.0
